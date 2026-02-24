@@ -33,7 +33,9 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Install dependencies
-        run: pip install jupyter-book==1.0.0
+        run: |
+          pip install jupyter-book==1.0.0
+          pip install pandas
       - name: Build HTML Assets
         run: jupyter-book build .
       - name: Upload artifact

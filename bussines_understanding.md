@@ -1,4 +1,6 @@
-## Memahami Bisnis (Business Understanding)
+## Memahami Bisnis 
+
+## Business Understanding
 
 Tahap memahami bisnis merupakan langkah awal dalam proses data mining yang berfokus pada pemahaman tujuan proyek dan kebutuhan bisnis secara menyeluruh. Pada tahap ini, organisasi berusaha memahami apa yang benar-benar ingin dicapai serta bagaimana data mining dapat membantu mencapai tujuan tersebut.
 

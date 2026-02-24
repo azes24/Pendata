@@ -22,5 +22,16 @@
 | Eksplorasi Data (EDA) | mencari pola, tren, korelasi, atau anomali menggunakan statistik deskriptif dan visualisasi |
 | Kualitas Data | memeriksa kelengkapan, keakuratan, konsistensi data. |
 
-# Atribut
+## Atribut
 
+atribut (dimensi) adalah menyatakan karakteristik atau fitur dari sata objek
+
+tipe-tipe :
+
+- nominal/kategorikal
+
+- ordinal
+
+- biner
+
+- numerik(interval-scaled, ratio-scaled)

@@ -5,5 +5,3 @@ format: jb-book
 root: intro
 chapters:
 - file: Memahami_Data
-- file: 
-- file: 

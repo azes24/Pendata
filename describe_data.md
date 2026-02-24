@@ -46,3 +46,16 @@ print("Standar deviasi    :", round(kolom.std(), 2))
 print("Variansi           :", round(kolom.var(), 2))
 ```
 
+maka statistik deskriptif dari 150 jumlah data yang berhasil diambil diatas adalah
+| Jenis Statistika Deskriptif | Nilai | Keterangan |
+|----------------------------|-------|------------|
+| Jumlah data (n) | 150 | Total observasi dalam dataset |
+| Rata-rata (Mean) | 5.84 | Nilai rata-rata seluruh data, menunjukkan pusat distribusi |
+| Median (Q2) | 5.8 | Nilai tengah data; 50% data berada di bawah dan 50% di atas |
+| Modus (Mode) | 5.0 (10 kali) | Nilai yang paling sering muncul dalam data |
+| Nilai Minimum (Min) | 4.3 | Nilai terkecil dalam dataset |
+| Nilai Maksimum (Max) | 7.9 | Nilai terbesar dalam dataset |
+| Kuartil 1 (Q1) | 5.1 | 25% data berada di bawah atau sama dengan nilai ini |
+| Kuartil 3 (Q3) | 6.4 | 75% data berada di bawah atau sama dengan nilai ini |
+| Standar Deviasi | 0.83 | Mengukur tingkat penyebaran data terhadap rata-rata |
+| Variansi | 0.69 | Kuadrat dari standar deviasi, menunjukkan besar penyebaran data |

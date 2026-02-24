@@ -6,5 +6,5 @@ root: intro
 chapters:
 - file: pengantar_data_mining
 - file: Memahami_Data
-  sections :
-  - file: Memahami_Data
+  sections:
+    - file: Memahami_Data

@@ -36,6 +36,7 @@ jobs:
         run: |
           pip install jupyter-book==1.0.0
           pip install pandas
+          pip install scipy
       - name: Build HTML Assets
         run: jupyter-book build .
       - name: Upload artifact

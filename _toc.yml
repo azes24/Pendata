@@ -4,7 +4,5 @@
 format: jb-book
 root: intro
 chapters:
-- file: pengantar_data_mining
+- file: bussines_understanding
 - file: Memahami_Data
-  sections:
-    - file: Memahami_Data

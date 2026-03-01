@@ -27,3 +27,6 @@ df.index = df.index + 1
 df.head(150)
 ```
 data IRIS Flower diatas diambil dari kaggle.
+
+## Mengukur jarak untuk Data IRIS
+

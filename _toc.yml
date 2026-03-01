@@ -11,3 +11,5 @@ chapters:
   - file: describe_data
   - file: visualisasi_data
 - file: mengukur_jarak
+  sections:
+  - file: pengukuran_titanicdata

@@ -50,3 +50,6 @@ Nominal / Kategorik     : species
 
 Pengukuran jarak dilakukan pada **5 sampel representatif** — 2 dari *Iris-setosa*, 2 dari *Iris-versicolor*, dan 1 dari *Iris-virginica* — agar perbedaan antar spesies terlihat jelas.
 
+### Manhattan
+
+![Grafik Data](/gambar/manhattaniris.png)

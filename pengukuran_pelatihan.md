@@ -48,7 +48,8 @@ Setiap kolom dalam dataset diklasifikasikan sebagai berikut:
 Numerik (Rasio/Kontinu) : UTS, UAS, Nilai
 Numerik (Diskrit/ID) : ID
 Ordinal : nilai huruf
-Nominal/Kategorik : Nama, Gender, Matkul
+Nominal/Kategorik : Nama, Matkul
+binary :  Gender
 ```
 
 

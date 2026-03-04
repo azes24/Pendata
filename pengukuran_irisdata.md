@@ -42,8 +42,8 @@ Dataset Iris memiliki struktur yang relatif bersih — tidak ada nilai kosong (*
 ### Ringkasan Klasifikasi
 
 ```
-Numerik (Rasio/Kontinu) : sepal_length, sepal_width, petal_length, petal_width
-Nominal / Kategorik     : species
+Numerik : sepal_length, sepal_width, petal_length, petal_width
+Kategorikal     : species
 ```
 
 ## Pengukuran Jarak

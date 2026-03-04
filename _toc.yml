@@ -16,3 +16,4 @@ chapters:
   - file: pengukuran_pelatihan
     sections:
       - file: pengukuran/numerik_pelatihan
+      - file: pengukuran/ordinal_pelatihan

@@ -23,15 +23,11 @@ Urutan kategori:
 
 Setiap kategori diubah menjadi **peringkat (rank)** agar dapat dihitung secara numerik.
 
-\[
 r(x) =
-\begin{cases}
-D = 1 \\
-C = 2 \\
-B = 3 \\
+D = 1 
+C = 2 
+B = 3 
 A = 4
-\end{cases}
-\]
 
 Contoh hasil transformasi:
 
@@ -49,21 +45,19 @@ Contoh hasil transformasi:
 
 Agar nilai berada dalam **rentang 0 – 1**, digunakan normalisasi:
 
-\[
-z_i = \frac{r_i - 1}{K - 1}
-\]
+
+z_i = {r_i - 1}{K - 1}
+
 
 di mana:
 
-- \(r_i\) = rank kategori
-- \(K\) = jumlah kategori ordinal
+- r_i = rank kategori
+- K = jumlah kategori ordinal
 - pada dataset ini **K = 4**
 
 Sehingga:
 
-\[
-z_i = \frac{r_i - 1}{3}
-\]
+z_i = {r_i - 1}{3}
 
 ---
 
@@ -91,23 +85,22 @@ Setelah normalisasi, jarak antar data dapat dihitung dengan:
 
 ## Manhattan Distance
 
-\[
 d(x,y) = |z_x - z_y|
-\]
+
 
 Contoh:
 
 - Budi (1.00) dan Ani (0.67)
 
-\[
+
 d = |1.00 - 0.67| = 0.33
-\]
+
 
 - Ani (0.67) dan Siti (0.00)
 
-\[
+
 d = |0.67 - 0.00| = 0.67
-\]
+
 
 Semakin besar nilai jarak → semakin berbeda tingkat ordinalnya.
 
@@ -119,6 +112,5 @@ Semakin besar nilai jarak → semakin berbeda tingkat ordinalnya.
 2. Data ordinal diubah menjadi **rank numerik**.
 3. Rank kemudian **dinormalisasi ke skala 0–1** menggunakan:
 
-\[
+
 z_i = \frac{r_i - 1}{K - 1}
-\]

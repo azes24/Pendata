@@ -113,4 +113,4 @@ Semakin besar nilai jarak → semakin berbeda tingkat ordinalnya.
 3. Rank kemudian **dinormalisasi ke skala 0–1** menggunakan:
 
 
-z_i = \frac{r_i - 1}{K - 1}
+z_i = {r_i - 1}{K - 1}

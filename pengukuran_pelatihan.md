@@ -45,10 +45,9 @@ Setiap kolom dalam dataset diklasifikasikan sebagai berikut:
 
 ### Ringkasan Klasifikasi Tipe Data
 ```
-Numerik (Rasio/Kontinu) : UTS, UAS, Nilai
-Numerik (Diskrit/ID) : ID
+Numerik : UTS, UAS, Nilai
 Ordinal : nilai huruf
-Kategorikal : Nama, Matkul
+Kategorikal : Nama, Matkul, ID
 binary :  Gender
 ```
 

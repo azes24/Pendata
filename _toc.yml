@@ -13,4 +13,6 @@ chapters:
 - file: mengukur_jarak
   sections:
   - file: pengukuran_irisdata
-  - file: pengukuran_titanicdata
+  - file: pengukuran_pelatihan
+    sections:
+      - file: pengukuran/numerik_pelatihan

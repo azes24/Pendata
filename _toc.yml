@@ -14,6 +14,3 @@ chapters:
   sections:
   - file: pengukuran_irisdata
   - file: pengukuran_pelatihan
-    sections:
-      - file: pengukuran/numerik_pelatihan
-      - file: pengukuran/ordinal_pelatihan

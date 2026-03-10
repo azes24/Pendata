@@ -49,7 +49,40 @@ Kategorikal     : species
 ## Pengukuran Jarak
 
 Pengukuran jarak dilakukan pada **5 sampel representatif** — 2 dari *Iris-setosa*, 2 dari *Iris-versicolor*, dan 1 dari *Iris-virginica* — agar perbedaan antar spesies terlihat jelas.
+### Euclidean
+
+Disini saya mengambil perhitungan jarak dari data ke-1 dan ke-40 dalam data IRIS,
+
+$$
+d=\sqrt{(5.1-5.1)^2+(3.5-3.4)^2+(1.4-1.5)^2+(0.2-0.2)^2}
+$$
+
+$$
+d=\sqrt{0^2+0.1^2+(-0.1)^2+0^2}
+$$
+
+$$
+d=\sqrt{0+0.01+0.01+0}
+$$
+
+$$
+d=\sqrt{0.02}=0.1414
+$$
+
+![Grafik Data](/gambar/enclideaniris.png)
+
 
 ### Manhattan
+
+Disini saya mengambil perhitungan jarak dari data ke-1 dan ke-40 dalam data IRIS,
+
+$$
+d=|5.1-5.1|+|3.5-3.4|+|1.4-1.5|+|0.2-0.2|
+$$
+
+$$
+d=0+0.1+0.1+0=0.2
+$$
+
 
 ![Grafik Data](/gambar/manhattaniris.png)

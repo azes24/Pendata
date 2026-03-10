@@ -82,8 +82,8 @@ $$\hat{x} = \frac{x_1 + x_2 + x_3}{K} = \frac{0.2 + 0.2 + 0.3}{3} = \frac{0.7}{3
 > Nilai asli petal_width data ke-40 pada dataset IRIS adalah **0.2**, sehingga hasil prediksi KNN sangat akurat.
 
 ### Menghitung Jarak
-![Grafik Data](/gambar/jarak40iris.png)
+![Grafik Data](../gambar/jarak40iris.png)
 
 ### Jarak Terdekat dihitung
-![Grafik Data](/gambar/jarak40iris2.png)
+![Grafik Data](../gambar/jarak40iris2.png)
 Hasil Prediksi yang dibulatkan ditemukan = 0.2 

@@ -16,4 +16,4 @@ chapters:
   - file: pengukuran_pelatihan
 - file: Missing_Value
   sections:
-  - file: missing_iris
+  - file: missing/missing_iris

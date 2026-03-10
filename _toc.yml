@@ -17,3 +17,4 @@ chapters:
 - file: Missing_Value
   sections:
   - file: missing/missing_iris
+  - file: missing/missing_pelatihan

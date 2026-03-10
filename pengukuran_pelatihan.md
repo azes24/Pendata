@@ -133,6 +133,19 @@ $$
 d = |1 - 0.57| = 0.43
 $$
 
+Contoh Hasil:
+| ID | Nama | Gender       | Matkul     | UTS  | UAS  | Nilai | Nilai Huruf |
+| -- | ---- | ------------ | ---------- | ---- | ---- | ----- | ----------- |
+| 1  | Budi | 1            | Kimia      | 1.00 | 0.50 | 0.83  | A           |
+| 2  | Ani  | 0            | Matematika | 0.57 | 0.50 | 0.58  | B           |
+| 3  | Joko | 1            | Biologi    | 0.86 | 1.00 | 1.00  | A           |
+| 4  | Siti | 0            | Matematika | 0.00 | 0.00 | 0.00  | D           |
+| 5  | Agus | 1            | Fisika     | 0.71 | 0.33 | 0.58  | B           |
+| 6  | Dewi | 0            | Biologi    | 0.57 | 1.00 | 0.83  | A           |
+| 7  | Eka  | 0            | Matematika | 0.86 | 1.00 | 1.00  | A           |
+| 8  | Adi  | 1            | Fisika     | 0.43 | 0.00 | 0.25  | C           |
+
+
 #### Pengukuran Atribut Ordinal
 
 Atribut ordinal memiliki urutan nilai.
@@ -140,40 +153,38 @@ Atribut ordinal memiliki urutan nilai.
 Contoh Nilai Huruf:
 | Nilai Huruf | Rank |
 | ----------- | ---- |
-| A           | 5    |
-| B           | 4    |
-| C           | 3    |
-| D           | 2    |
-| E           | 1    |
+| A           | 4    |
+| B           | 3    |
+| C           | 2    |
+| D           | 1    |
 
 Contoh Normalisasi Rank:
 
 $$
-A/5 = \frac{5 - 1}{5 - 1} = 1
+A/4 = \frac{4 - 1}{4 - 1} = 1
 $$
 
 $$
-B/4 = \frac{4 - 1}{5 - 1} = 0.75
+B/3 = \frac{3 - 1}{4 - 1} = 0.67
 $$
 
 Jadi jarak ordinal antara 2 rank diatas:
 
 $$
-d = |1-0.75| = 0.25
+d = |1-0.67| = 0.33
 $$ 
 
 Contoh Hasil :
-
-| ID | Nama | Gender (0/1) | Matkul     | UTS | UAS | Nilai | Nilai Huruf |
-| -- | ---- | ------------ | ---------- | --- | --- | ----- | ----------- |
-| 1  | Budi | 1            | Kimia      | 90  | 80  | 85    | 1.00        |
-| 2  | Ani  | 0            | Matematika | 75  | 80  | 77.5  | 0.75        |
-| 3  | Joko | 1            | Biologi    | 85  | 95  | 90    | 1.00        |
-| 4  | Siti | 0            | Matematika | 55  | 65  | 60    |  0.25        |
-| 5  | Agus | 1            | Fisika     | 80  | 75  | 77.5  |  0.75        |
-| 6  | Dewi | 0            | Biologi    | 75  | 95  | 85    |  1.00        |
-| 7  | Eka  | 0            | Matematika | 85  | 95  | 90    |  1.00        |
-| 8  | Adi  | 1            | Fisika     | 70  | 65  | 67.5  |  0.50        |
+| ID | Nama | Gender       | Matkul     | UTS  | UAS  | Nilai | Nilai Huruf |
+| -- | ---- | ------------ | ---------- | ---- | ---- | ----- | ----------- |
+| 1  | Budi | 1            | Kimia      | 1.00 | 0.50 | 0.83  | 1.00           |
+| 2  | Ani  | 0            | Matematika | 0.57 | 0.50 | 0.58  | 0.67           |
+| 3  | Joko | 1            | Biologi    | 0.86 | 1.00 | 1.00  | 1.00          |
+| 4  | Siti | 0            | Matematika | 0.00 | 0.00 | 0.00  | 0.00         |
+| 5  | Agus | 1            | Fisika     | 0.71 | 0.33 | 0.58  |  0.67           |
+| 6  | Dewi | 0            | Biologi    | 0.57 | 1.00 | 0.83  | 1.00          |
+| 7  | Eka  | 0            | Matematika | 0.86 | 1.00 | 1.00  | 1.00          |
+| 8  | Adi  | 1            | Fisika     | 0.43 | 0.00 | 0.25  | 0.33          |
 
 ### Menghitung Gower Distance
 
@@ -196,22 +207,22 @@ jarak tiap atribut antara Data 1 dan Data 2 adalah:
 | Atribut     | Jarak |
 | ----------- | ----- |
 | Gender      | 1     |
-| Matkul      | 1     |
+| Matkul      | 0     |
 | UTS         | 0.43  |
 | UAS         | 0     |
-| Nilai       | 0.21  |
-| Nilai Huruf | 0.25  |
+| Nilai       | 0.27  |
+| Nilai Huruf | 0.33  |
 
 Maka:
 
 $$
-D_{12} = \frac{1 + 1 + 0.43 + 0 + 0.21 + 0.25}{6}
+D_{12} = \frac{1 + 0 + 0.43 + 0 + 0.27 + 0.33}{6}
 $$
 
 $$
-D_{12} = \frac{2.89}{6}
+D_{12} = \frac{2.03}{6}
 $$
 
 $$
-D_{12} = 0.48
+D_{12} = 0.338
 $$

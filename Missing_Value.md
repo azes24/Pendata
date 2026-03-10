@@ -1,5 +1,5 @@
 # Missing Value 
-dengan Metode KNN (K-Nearest Neighbor)
+**dengan Metode KNN (K-Nearest Neighbor)**
 
 ## Pengertian
 

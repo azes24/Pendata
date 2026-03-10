@@ -205,6 +205,10 @@ jarak tiap atribut antara Data 1 dan Data 2 adalah:
 Maka:
 
 $$
+D_{12} = \frac{1 + 1 + 0.43 + 0 + 0.21 + 0.25}{6}
+$$
+
+$$
 D_{12} = \frac{2.89}{6}
 $$
 

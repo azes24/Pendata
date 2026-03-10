@@ -15,3 +15,5 @@ chapters:
   - file: pengukuran_irisdata
   - file: pengukuran_pelatihan
 - file: Missing_Value
+  sections:
+  - file: missing_iris

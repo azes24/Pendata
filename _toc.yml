@@ -18,3 +18,5 @@ chapters:
   sections:
   - file: missing/missing_iris
   - file: missing/missing_pelatihan
+  - file: missing/missing_soal
+- file: normalisasi

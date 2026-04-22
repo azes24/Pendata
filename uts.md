@@ -113,7 +113,60 @@ Total        : 2.000 sampel
 ---
 
 
-## Preprosesing
+# Preprosesing menggunakan Orange
 
-### Table View Awal
-![Grafik Data](../gambar/uts1.png)
+## Table View Awal
+![Grafik Data](./gambar/uts1.png)
+
+## Memilih kolom Label
+![Grafik Data](./gambar/uts2.png)
+Disini memilih target yaitu label sebagai acuan yang akan di tampilkan hasilnya yaitu antara subur dan tidak subur.
+dan kolom yang lain sebagai fitur.
+
+## Mencari missing Values
+![Grafik Data](./gambar/uts3.png)
+Dari dataset yang diberikan terdapat banyak missing values yang harus dicari sebelum dilakukan normalisasi, disini untuk mengisi missing value yaitu menggunakan impute dengan method average atau most frequence.
+
+dan didapat hasilnya setelah proses tersebut sebagai berikut.
+![Grafik Data](./gambar/uts4.png)
+
+
+## Normalisasi data
+![Grafik Data](./gambar/uts5.png)
+Setelah melengkapi semua data, maka hal selanjutnya yaitu normalisasi data sebelum diproses lebih lanjut.
+disini untuk nnoermalisasi menggunakan widget continnuize, dengan target label, dan fitur yang dinormalisasi antara 0 - 1.
+
+dan didapat hasilnya setelah proses tersebut sebagai berikut.
+![Grafik Data](./gambar/uts6.png)
+
+
+# Eksekusi data 
+## kNN
+![Grafik Data](./gambar/uts7.png)
+Menghitung kNN dengan K = 4 dan metode yang digunakan adalah Euclidean
+
+## Test dan Score
+![Grafik Data](./gambar/uts8.png)
+Dari hasil kNN dan Normalisasi didapatkan bahwa:
+
+| Atribut | Hasil |
+|---|---|
+| Accuracy | 1.000 |
+| Precision | 1.000 |
+| Recall | 1.000 |
+| F1-Score | 1.000 |
+
+## Matrix
+![Grafik Data](./gambar/uts9.png)
+Dari hasil test and score maka didapat matriks yaitu:
+
+| | Subur | Tidak Subur |
+|---|---|---|---|
+| subur | 1000 | 0 |
+| Tidak subur | 0 | 1000 | 
+
+Maka didapat subur = 1000 dan tidak subur 1000 dari total 2000.
+
+## Alur Dalam Orange
+![Grafik Data](./gambar/uts10.png)
+

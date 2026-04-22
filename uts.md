@@ -161,7 +161,7 @@ Dari hasil kNN dan Normalisasi didapatkan bahwa:
 Dari hasil test and score maka didapat matriks yaitu:
 
 | | Subur | Tidak Subur |
-|---|---|---|---|
+|---|---|---|
 | subur | 1000 | 0 |
 | Tidak subur | 0 | 1000 | 
 

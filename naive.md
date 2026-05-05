@@ -22,11 +22,36 @@ P(Ci | X) ∝ P(X | Ci) * P(Ci)
 
 ---
 
-## Dataset 1: Buys Computer
+## Dataset: Buys Computer
 
-Dataset ini memiliki 14 record dengan 4 atribut kategorik: age, income, student, credit_rating. Label kelas adalah buys_computer (yes/no).
+Dataset `buys_computer.csv` memiliki **14 record** dengan **4 atribut kategorik**: `age`, `income`, `student`, `credit_rating`. Label kelas adalah `buys_computer` (yes/no).
 
-### Script Python
+### Isi Dataset
+
+| age   | income | student | credit_rating | buys_computer |
+|-------|--------|---------|---------------|---------------|
+| <=30  | high   | no      | fair          | no            |
+| <=30  | high   | no      | excellent     | no            |
+| 31-40 | high   | no      | fair          | yes           |
+| >40   | medium | no      | fair          | yes           |
+| >40   | low    | yes     | fair          | yes           |
+| >40   | low    | yes     | excellent     | no            |
+| 31-40 | low    | yes     | excellent     | yes           |
+| <=30  | medium | no      | fair          | no            |
+| <=30  | low    | yes     | fair          | yes           |
+| >40   | medium | yes     | fair          | yes           |
+| <=30  | medium | yes     | excellent     | yes           |
+| 31-40 | medium | no      | excellent     | yes           |
+| 31-40 | high   | yes     | fair          | yes           |
+| >40   | medium | no      | excellent     | no            |
+
+**Distribusi kelas:** `yes` = 9 record, `no` = 5 record
+
+---
+
+## Script Python
+
+### Import Library dan Baca Data
 
 ```python
 import pandas as pd
@@ -35,48 +60,126 @@ from sklearn.naive_bayes import CategoricalNB
 from sklearn.preprocessing import OrdinalEncoder
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 
-# Dataset dari materi kuliah
-data = {
-    'age':           ['<=30','<=30','31-40','>40','>40','>40','31-40','<=30','<=30','>40','<=30','31-40','31-40','>40'],
-    'income':        ['high','high','high','medium','low','low','low','medium','low','medium','medium','medium','high','medium'],
-    'student':       ['no','no','no','no','yes','yes','yes','no','yes','yes','yes','no','yes','no'],
-    'credit_rating': ['fair','excellent','fair','fair','fair','excellent','excellent','fair','fair','fair','excellent','excellent','fair','excellent'],
-    'buys_computer': ['no','no','yes','yes','yes','no','yes','no','yes','yes','yes','yes','yes','no']
-}
+# Baca dari CSV
+df = pd.read_csv('buys_computer.csv')
 
-df = pd.DataFrame(data)
 print("=== Dataset ===")
 print(df.to_string(index=False))
 print(f"\nJumlah record: {len(df)}")
 print(f"Distribusi kelas:\n{df['buys_computer'].value_counts()}")
 ```
 
+**Output:**
+```
+=== Dataset ===
+  age income student credit_rating buys_computer
+ <=30   high      no          fair            no
+ <=30   high      no     excellent            no
+31-40   high      no          fair           yes
+  >40 medium      no          fair           yes
+  >40    low     yes          fair           yes
+  >40    low     yes     excellent            no
+31-40    low     yes     excellent           yes
+ <=30 medium      no          fair            no
+ <=30    low     yes          fair           yes
+  >40 medium     yes          fair           yes
+ <=30 medium     yes     excellent           yes
+31-40 medium      no     excellent           yes
+31-40   high     yes          fair           yes
+  >40 medium      no     excellent            no
+
+Jumlah record: 14
+Distribusi kelas:
+buys_computer
+yes    9
+no     5
+```
+
+---
+
+### Encoding dan Training Model
+
 ```python
-# Encoding atribut kategorik
+# Pisah fitur dan label
 X = df.drop(columns='buys_computer')
 y = df['buys_computer']
 
-encoder = OrdinalEncoder()
-X_encoded = encoder.fit_transform(X)
-y_encoded = (y == 'yes').astype(int)  # yes=1, no=0
+# OrdinalEncoder mengubah kategori menjadi angka
+enc = OrdinalEncoder()
+X_enc = enc.fit_transform(X)
+y_enc = (y == 'yes').astype(int)  # yes=1, no=0
 
-# Training model CategoricalNB
-model = CategoricalNB()
-model.fit(X_encoded, y_encoded)
+print("=== Kategori per Kolom (setelah encoding) ===")
+for i, col in enumerate(X.columns):
+    print(f"  {col}: {list(enc.categories_[i])}")
 
-# Prediksi pada data training (evaluasi dasar)
-y_pred = model.predict(X_encoded)
-print("=== Evaluasi Model (Training Set) ===")
-print(f"Accuracy: {accuracy_score(y_encoded, y_pred):.4f}")
-print("\nClassification Report:")
-print(classification_report(y_encoded, y_pred, target_names=['no','yes']))
-print("Confusion Matrix:")
-print(confusion_matrix(y_encoded, y_pred))
+# Training CategoricalNB dengan Laplace smoothing (alpha=1)
+model = CategoricalNB(alpha=1.0)
+model.fit(X_enc, y_enc)
 ```
 
+**Output:**
+```
+=== Kategori per Kolom (setelah encoding) ===
+  age: ['31-40', '<=30', '>40']
+  income: ['high', 'low', 'medium']
+  student: ['no', 'yes']
+  credit_rating: ['excellent', 'fair']
+```
+
+> **Catatan:** `OrdinalEncoder` secara default mengurutkan kategori secara alfabetis. Indeks numerik ini digunakan secara internal oleh `CategoricalNB`.
+
+---
+
+### Evaluasi Model pada Training Set
+
 ```python
-# Prediksi data baru: X = (age<=30, income=medium, student=yes, credit_rating=fair)
-# Sesuai contoh di materi kuliah halaman 11
+y_pred = model.predict(X_enc)
+
+print("=== Evaluasi Model (Training Set) ===")
+print(f"Accuracy: {accuracy_score(y_enc, y_pred):.4f}")
+print("\nClassification Report:")
+print(classification_report(y_enc, y_pred, target_names=['no', 'yes']))
+print("Confusion Matrix:")
+print(confusion_matrix(y_enc, y_pred))
+```
+
+**Output:**
+```
+=== Evaluasi Model (Training Set) ===
+Accuracy: 0.9286
+
+Classification Report:
+              precision    recall  f1-score   support
+
+          no       1.00      0.80      0.89         5
+         yes       0.90      1.00      0.95         9
+
+    accuracy                           0.93        14
+   macro avg       0.95      0.90      0.92        14
+weighted avg       0.94      0.93      0.93        14
+
+Confusion Matrix:
+[[4 1]
+ [0 9]]
+```
+
+**Interpretasi Confusion Matrix:**
+
+|                  | Prediksi: no | Prediksi: yes |
+|------------------|:------------:|:-------------:|
+| **Aktual: no**   | 4 (TN)       | 1 (FP)        |
+| **Aktual: yes**  | 0 (FN)       | 9 (TP)        |
+
+Model memprediksi 13 dari 14 record dengan benar (accuracy 92.86%). Terdapat 1 kesalahan: 1 record berlabel `no` diprediksi `yes`.
+
+---
+
+### Prediksi Data Baru
+
+```python
+# Prediksi X = (age<=30, income=medium, student=yes, credit_rating=fair)
+# Contoh dari materi kuliah
 data_baru = pd.DataFrame([{
     'age': '<=30',
     'income': 'medium',
@@ -84,212 +187,145 @@ data_baru = pd.DataFrame([{
     'credit_rating': 'fair'
 }])
 
-X_baru_encoded = encoder.transform(data_baru)
-prediksi = model.predict(X_baru_encoded)
-probabilitas = model.predict_proba(X_baru_encoded)
+X_baru_enc = enc.transform(data_baru)
+prediksi   = model.predict(X_baru_enc)
+probabilitas = model.predict_proba(X_baru_enc)
 
 label = ['no', 'yes']
 print("=== Prediksi Data Baru ===")
-print(f"Input: age<=30, income=medium, student=yes, credit_rating=fair")
+print("Input: age<=30, income=medium, student=yes, credit_rating=fair")
 print(f"Prediksi kelas: buys_computer = {label[prediksi[0]]}")
 print(f"P(buys_computer=no  | X) = {probabilitas[0][0]:.4f}")
 print(f"P(buys_computer=yes | X) = {probabilitas[0][1]:.4f}")
 ```
 
-### Output yang Diharapkan
-
+**Output:**
 ```
 === Prediksi Data Baru ===
 Input: age<=30, income=medium, student=yes, credit_rating=fair
 Prediksi kelas: buys_computer = yes
-P(buys_computer=no  | X) = 0.2000
-P(buys_computer=yes | X) = 0.8000
+P(buys_computer=no  | X) = 0.2322
+P(buys_computer=yes | X) = 0.7678
 ```
-
-Hasil ini konsisten dengan perhitungan manual di materi:
-- P(X | buys=yes) * P(yes) = 0.044 * 0.643 = 0.028
-- P(X | buys=no)  * P(no)  = 0.019 * 0.357 = 0.007
-- Kesimpulan: X termasuk kelas **buys_computer = yes**
 
 ---
 
-## Dataset 2: Play Tennis (Bayesian Belief Network)
+## Verifikasi Perhitungan Manual
 
-Dataset ini digunakan untuk contoh Bayesian Belief Network dengan variabel: Outlook, Temperature, Humidity, Windy. Label kelas adalah Play (yes/no).
+### Prior Probability
 
-### Script Python
+Dari 14 data training:
 
-```python
-import pandas as pd
-from sklearn.naive_bayes import CategoricalNB
-from sklearn.preprocessing import OrdinalEncoder
-from sklearn.metrics import classification_report, accuracy_score
-from sklearn.model_selection import LeaveOneOut, cross_val_score
+| Kelas | Count | P(kelas) |
+|-------|-------|----------|
+| yes   | 9     | 9/14 = **0.6429** |
+| no    | 5     | 5/14 = **0.3571** |
 
-# Dataset play tennis (14 record)
-data_tennis = {
-    'outlook':     ['sunny','sunny','overcast','rainy','rainy','rainy','overcast','sunny','sunny','rainy','sunny','overcast','overcast','rainy'],
-    'temperature': ['hot','hot','hot','mild','cool','cool','cool','mild','cool','mild','mild','mild','hot','mild'],
-    'humidity':    ['high','high','high','high','normal','normal','normal','high','normal','normal','normal','high','normal','high'],
-    'windy':       ['false','true','false','false','false','true','true','false','false','false','true','true','false','true'],
-    'play':        ['no','no','yes','yes','yes','no','yes','no','yes','yes','yes','yes','yes','no']
-}
+### Tabel Probabilitas Kondisional P(fitur \| kelas) dengan Laplace α=1
 
-df_tennis = pd.DataFrame(data_tennis)
-print("=== Dataset Play Tennis ===")
-print(df_tennis.to_string(index=False))
-print(f"\nDistribusi kelas:\n{df_tennis['play'].value_counts()}")
+| Atribut       | Nilai     | P(\|no)  | P(\|yes) |
+|---------------|-----------|----------|----------|
+| age           | 31-40     | 0.1250   | 0.4167   |
+|               | <=30      | 0.5000   | 0.2500   |
+|               | >40       | 0.3750   | 0.3333   |
+| income        | high      | 0.3750   | 0.2500   |
+|               | low       | 0.2500   | 0.3333   |
+|               | medium    | 0.3750   | 0.4167   |
+| student       | no        | 0.7143   | 0.3636   |
+|               | yes       | 0.2857   | 0.6364   |
+| credit_rating | excellent | 0.5714   | 0.3636   |
+|               | fair      | 0.4286   | 0.6364   |
+
+### Perhitungan untuk X = (age<=30, income=medium, student=yes, credit_rating=fair)
+
+**Skor kelas `yes`:**
+
+```
+P(yes|X) ∝ P(age<=30|yes) × P(medium|yes) × P(student=yes|yes) × P(fair|yes) × P(yes)
+         = 0.2500 × 0.4167 × 0.6364 × 0.6364 × 0.6429
+         = 0.027118
 ```
 
-```python
-# Encoding
-X_t = df_tennis.drop(columns='play')
-y_t = df_tennis['play']
+**Skor kelas `no`:**
 
-encoder_t = OrdinalEncoder()
-X_t_enc = encoder_t.fit_transform(X_t)
-y_t_enc = (y_t == 'yes').astype(int)
-
-# CategoricalNB dengan Laplace smoothing (alpha=1)
-model_tennis = CategoricalNB(alpha=1.0)
-model_tennis.fit(X_t_enc, y_t_enc)
-
-# Leave-One-Out Cross Validation untuk dataset kecil
-loo = LeaveOneOut()
-scores = cross_val_score(model_tennis, X_t_enc, y_t_enc, cv=loo, scoring='accuracy')
-print(f"\nLeave-One-Out CV Accuracy: {scores.mean():.4f} (+/- {scores.std():.4f})")
+```
+P(no|X) ∝ P(age<=30|no) × P(medium|no) × P(student=yes|no) × P(fair|no) × P(no)
+        = 0.5000 × 0.3750 × 0.2857 × 0.4286 × 0.3571
+        = 0.008200
 ```
 
-```python
-# Prediksi I: Outlook=Sunny, Temp=Cool, Humidity=High, Windy=True
-# Sesuai contoh Classification I, II, III di materi (halaman 20-22)
-test_case_1 = pd.DataFrame([{
-    'outlook': 'sunny',
-    'temperature': 'cool',
-    'humidity': 'high',
-    'windy': 'true'
-}])
+**Normalisasi:**
 
-X_test1 = encoder_t.transform(test_case_1)
-pred1 = model_tennis.predict(X_test1)
-prob1 = model_tennis.predict_proba(X_test1)
-
-label_t = ['no', 'yes']
-print("=== Prediksi Case 1 ===")
-print("Input: Outlook=Sunny, Temp=Cool, Humidity=High, Windy=True")
-print(f"Prediksi: play = {label_t[pred1[0]]}")
-print(f"P(play=no  | X) = {prob1[0][0]:.4f}")
-print(f"P(play=yes | X) = {prob1[0][1]:.4f}")
+```
+P(yes|X) = 0.027118 / (0.027118 + 0.008200) = 0.7678
+P(no|X)  = 0.008200 / (0.027118 + 0.008200) = 0.2322
 ```
 
-```python
-# Prediksi II: Outlook tidak diketahui (missing value)
-# Sesuai contoh Classification IV-VII di materi (halaman 23-26)
-# Marginalisasi atas semua nilai outlook yang mungkin
-
-outlooks = ['sunny', 'overcast', 'rainy']
-prob_yes_total = 0
-prob_no_total = 0
-
-for outlook_val in outlooks:
-    test_case = pd.DataFrame([{
-        'outlook': outlook_val,
-        'temperature': 'cool',
-        'humidity': 'high',
-        'windy': 'true'
-    }])
-    X_tc = encoder_t.transform(test_case)
-    prob = model_tennis.predict_proba(X_tc)[0]
-    
-    # P(outlook | play) dari model
-    outlook_idx = list(outlooks).index(outlook_val)
-    
-    prob_yes_total += prob[1]
-    prob_no_total  += prob[0]
-
-# Normalisasi
-total = prob_yes_total + prob_no_total
-prob_yes_norm = prob_yes_total / total
-prob_no_norm  = prob_no_total  / total
-
-print("=== Prediksi Case 2: Outlook Missing ===")
-print("Input: Outlook=?, Temp=Cool, Humidity=High, Windy=True")
-print(f"P(play=yes | X) = {prob_yes_norm:.4f}")
-print(f"P(play=no  | X) = {prob_no_norm:.4f}")
-print(f"Prediksi: play = {'yes' if prob_yes_norm > prob_no_norm else 'no'}")
-```
-
-### Catatan: Case 2 dengan Outlook Missing
-
-Materi halaman 26 menunjukkan hasil manual:
-- P(play=yes | temp=cool, humidity=high, windy=true) = 0.44
-- P(play=no  | temp=cool, humidity=high, windy=true) = 0.56
-- Prediksi akhir: **play = no**
-
-Sklearn melakukan marginalisasi secara aproksimasi. Untuk hasil yang identik dengan hitungan manual, implementasi kustom diperlukan karena sklearn tidak menangani marginalisasi variabel tersembunyi secara langsung.
+**Kesimpulan: X diprediksi sebagai buys\_computer = `yes`** ✓
 
 ---
 
 ## Laplacian Correction
 
-Masalah probabilitas nol muncul ketika kombinasi nilai atribut dan kelas tidak pernah muncul di data training. Laplacian correction menambahkan konstanta (biasanya 1) ke setiap hitungan frekuensi:
+Masalah probabilitas nol muncul ketika suatu kombinasi nilai atribut dan kelas tidak pernah muncul di data training. Laplacian correction menambahkan konstanta α ke setiap hitungan frekuensi:
+
+```
+P(xi | Cj) = (count(xi, Cj) + α) / (count(Cj) + α × |Vi|)
+```
+
+di mana |Vi| adalah jumlah nilai unik atribut i.
 
 ```python
-from sklearn.naive_bayes import CategoricalNB
-
-# alpha=1.0 adalah Laplace smoothing (default di CategoricalNB)
-# alpha=0.0 berarti tidak ada smoothing (bisa menghasilkan probabilitas 0)
+# alpha=0.0: tanpa smoothing (bisa menghasilkan probabilitas = 0)
+# alpha=1.0: Laplace smoothing (default yang direkomendasikan)
 
 model_tanpa_laplace = CategoricalNB(alpha=0.0)
 model_dengan_laplace = CategoricalNB(alpha=1.0)
 
-model_tanpa_laplace.fit(X_t_enc, y_t_enc)
-model_dengan_laplace.fit(X_t_enc, y_t_enc)
-
-# Contoh kasus: outlook=overcast, play=no tidak ada di data
-# Tanpa Laplace: P(outlook=overcast | play=no) = 0/5 = 0
-# Dengan Laplace: P(outlook=overcast | play=no) = (0+1)/(5+3) = 0.125
+model_tanpa_laplace.fit(X_enc, y_enc)
+model_dengan_laplace.fit(X_enc, y_enc)
 ```
 
-Dari materi kuliah halaman 16:
-- P(outlook=overcast | play=no) = (0+1)/(5+3) = 0.125
+**Contoh kasus:** Pada data training, tidak ada record dengan `age=31-40` dan `buys_computer=no`.
 
-Ini menghindari perkalian probabilitas menjadi 0 hanya karena satu kombinasi tidak ada di training data.
+| Metode          | P(age=31-40 \| no)          |
+|-----------------|-----------------------------|
+| Tanpa Laplace   | 0 / 5 = **0.0000** ⚠        |
+| Dengan Laplace  | (0+1) / (5+3) = **0.1250** ✓ |
+
+Tanpa Laplace, skor kelas `no` akan selalu nol untuk input apapun yang mengandung `age=31-40`, sehingga hasil prediksi menjadi tidak andal.
 
 ---
 
 ## Perbandingan Varian Naive Bayes di Sklearn
 
-| Kelas              | Tipe Data        | Keterangan                                      |
-|--------------------|------------------|-------------------------------------------------|
-| `GaussianNB`       | Kontinu          | Distribusi fitur diasumsikan Gaussian           |
-| `CategoricalNB`    | Kategorik        | Cocok untuk atribut diskrit seperti dataset ini |
-| `MultinomialNB`    | Hitungan/frekuensi | Umum dipakai untuk klasifikasi teks           |
-| `BernoulliNB`      | Biner (0/1)      | Cocok untuk fitur boolean                       |
-| `ComplementNB`     | Hitungan/frekuensi | Versi perbaikan MultinomialNB untuk data tidak seimbang |
+| Kelas           | Tipe Data           | Keterangan                                               |
+|-----------------|---------------------|----------------------------------------------------------|
+| `GaussianNB`    | Kontinu             | Distribusi fitur diasumsikan Gaussian (normal)           |
+| `CategoricalNB` | Kategorik           | Cocok untuk atribut diskrit seperti dataset ini          |
+| `MultinomialNB` | Hitungan/frekuensi  | Umum dipakai untuk klasifikasi teks (bag-of-words)       |
+| `BernoulliNB`   | Biner (0/1)         | Cocok untuk fitur boolean                                |
+| `ComplementNB`  | Hitungan/frekuensi  | Versi perbaikan MultinomialNB untuk data tidak seimbang  |
 
-Untuk dataset buys_computer dan play_tennis di atas, `CategoricalNB` adalah pilihan yang tepat karena semua atribut bersifat kategorik.
+Untuk dataset `buys_computer` yang semua atributnya bersifat kategorik, **`CategoricalNB`** adalah pilihan yang paling tepat.
 
 ---
 
 ## Kelebihan dan Keterbatasan
 
 **Kelebihan:**
-- Mudah diimplementasikan dan cepat dilatih
+
+- Mudah diimplementasikan dan sangat cepat dilatih
 - Bekerja baik pada dataset kecil
+- Efektif bahkan ketika dimensi fitur tinggi
 - Tidak sensitif terhadap fitur yang tidak relevan jika jumlah data cukup
 
 **Keterbatasan:**
+
 - Asumsi independensi antar atribut jarang terpenuhi dalam data nyata
 - Akurasi menurun ketika ada korelasi kuat antar fitur
 - Tidak bisa memodelkan ketergantungan antar variabel (berbeda dengan Bayesian Belief Network)
 
-Bayesian Belief Network (BBN) hadir sebagai solusi atas keterbatasan ini. BBN menggunakan graf berarah tanpa siklus (DAG) untuk merepresentasikan hubungan sebab-akibat antar variabel, seperti yang diilustrasikan pada materi halaman 14-18.
+Bayesian Belief Network (BBN) hadir sebagai solusi atas keterbatasan ini. BBN menggunakan graf berarah tanpa siklus (DAG) untuk merepresentasikan hubungan sebab-akibat antar variabel.
 
 ---
-
-## Referensi
-
-- Han, J., Kamber, M., & Pei, J. - Data Mining: Concepts and Techniques
-- Scikit-learn: CategoricalNB - https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.CategoricalNB.html
-- Scikit-learn: Naive Bayes - https://scikit-learn.org/stable/modules/naive_bayes.html

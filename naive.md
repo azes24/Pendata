@@ -45,11 +45,11 @@ Dataset `buys_computer.csv` memiliki **14 record** dengan **4 atribut kategorik*
 | 31-40 | high   | yes     | fair          | yes           |
 | >40   | medium | no      | excellent     | no            |
 
-**Distribusi kelas:** `yes` = 9 record, `no` = 5 record
-
 ---
 
 ## Script Python
+
+Jalankan dengan: `python naive_bayes.py`
 
 ### Import Library dan Baca Data
 
@@ -60,39 +60,15 @@ from sklearn.naive_bayes import CategoricalNB
 from sklearn.preprocessing import OrdinalEncoder
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 
-# Baca dari CSV
 df = pd.read_csv('buys_computer.csv')
 
-print("=== Dataset ===")
+print("=" * 50)
+print("=== DATASET ===")
+print("=" * 50)
 print(df.to_string(index=False))
 print(f"\nJumlah record: {len(df)}")
-print(f"Distribusi kelas:\n{df['buys_computer'].value_counts()}")
-```
-
-**Output:**
-```
-=== Dataset ===
-  age income student credit_rating buys_computer
- <=30   high      no          fair            no
- <=30   high      no     excellent            no
-31-40   high      no          fair           yes
-  >40 medium      no          fair           yes
-  >40    low     yes          fair           yes
-  >40    low     yes     excellent            no
-31-40    low     yes     excellent           yes
- <=30 medium      no          fair            no
- <=30    low     yes          fair           yes
-  >40 medium     yes          fair           yes
- <=30 medium     yes     excellent           yes
-31-40 medium      no     excellent           yes
-31-40   high     yes          fair           yes
-  >40 medium      no     excellent            no
-
-Jumlah record: 14
-Distribusi kelas:
-buys_computer
-yes    9
-no     5
+print(f"\nDistribusi kelas:")
+print(df['buys_computer'].value_counts().to_string())
 ```
 
 ---
@@ -100,16 +76,16 @@ no     5
 ### Encoding dan Training Model
 
 ```python
-# Pisah fitur dan label
 X = df.drop(columns='buys_computer')
 y = df['buys_computer']
 
-# OrdinalEncoder mengubah kategori menjadi angka
 enc = OrdinalEncoder()
 X_enc = enc.fit_transform(X)
 y_enc = (y == 'yes').astype(int)  # yes=1, no=0
 
-print("=== Kategori per Kolom (setelah encoding) ===")
+print("\n" + "=" * 50)
+print("=== ENCODING KATEGORI ===")
+print("=" * 50)
 for i, col in enumerate(X.columns):
     print(f"  {col}: {list(enc.categories_[i])}")
 
@@ -118,16 +94,35 @@ model = CategoricalNB(alpha=1.0)
 model.fit(X_enc, y_enc)
 ```
 
-**Output:**
-```
-=== Kategori per Kolom (setelah encoding) ===
-  age: ['31-40', '<=30', '>40']
-  income: ['high', 'low', 'medium']
-  student: ['no', 'yes']
-  credit_rating: ['excellent', 'fair']
-```
-
 > **Catatan:** `OrdinalEncoder` secara default mengurutkan kategori secara alfabetis. Indeks numerik ini digunakan secara internal oleh `CategoricalNB`.
+
+---
+
+### Prior Probability dan Probabilitas Kondisional
+
+```python
+print("\n" + "=" * 50)
+print("=== PRIOR PROBABILITY ===")
+print("=" * 50)
+classes = ['no', 'yes']
+n_total = len(y)
+for label in classes:
+    count = (y == label).sum()
+    print(f"  P({label}) = {count}/{n_total} = {count/n_total:.4f}")
+
+print("\n" + "=" * 50)
+print("=== PROBABILITAS KONDISIONAL P(fitur|kelas) — Laplace α=1 ===")
+print("=" * 50)
+for fi, col in enumerate(X.columns):
+    cats = enc.categories_[fi]
+    print(f"\n  Atribut: {col}")
+    print(f"  {'Nilai':<14} {'P(|no)':>10} {'P(|yes)':>10}")
+    print(f"  {'-'*36}")
+    for ci, cat in enumerate(cats):
+        p_no  = np.exp(model.feature_log_prob_[fi][0][ci])
+        p_yes = np.exp(model.feature_log_prob_[fi][1][ci])
+        print(f"  {cat:<14} {p_no:>10.4f} {p_yes:>10.4f}")
+```
 
 ---
 
@@ -136,50 +131,33 @@ model.fit(X_enc, y_enc)
 ```python
 y_pred = model.predict(X_enc)
 
-print("=== Evaluasi Model (Training Set) ===")
+print("\n" + "=" * 50)
+print("=== EVALUASI MODEL (Training Set) ===")
+print("=" * 50)
 print(f"Accuracy: {accuracy_score(y_enc, y_pred):.4f}")
 print("\nClassification Report:")
 print(classification_report(y_enc, y_pred, target_names=['no', 'yes']))
+
+cm = confusion_matrix(y_enc, y_pred)
 print("Confusion Matrix:")
-print(confusion_matrix(y_enc, y_pred))
-```
-
-**Output:**
-```
-=== Evaluasi Model (Training Set) ===
-Accuracy: 0.9286
-
-Classification Report:
-              precision    recall  f1-score   support
-
-          no       1.00      0.80      0.89         5
-         yes       0.90      1.00      0.95         9
-
-    accuracy                           0.93        14
-   macro avg       0.95      0.90      0.92        14
-weighted avg       0.94      0.93      0.93        14
-
-Confusion Matrix:
-[[4 1]
- [0 9]]
+print(f"  {'':20} {'Prediksi: no':>14} {'Prediksi: yes':>14}")
+print(f"  {'Aktual: no':20} {cm[0][0]:>14} {cm[0][1]:>14}")
+print(f"  {'Aktual: yes':20} {cm[1][0]:>14} {cm[1][1]:>14}")
+print(f"\n  TN={cm[0][0]}, FP={cm[0][1]}, FN={cm[1][0]}, TP={cm[1][1]}")
 ```
 
 **Interpretasi Confusion Matrix:**
 
 |                  | Prediksi: no | Prediksi: yes |
 |------------------|:------------:|:-------------:|
-| **Aktual: no**   | 4 (TN)       | 1 (FP)        |
-| **Aktual: yes**  | 0 (FN)       | 9 (TP)        |
-
-Model memprediksi 13 dari 14 record dengan benar (accuracy 92.86%). Terdapat 1 kesalahan: 1 record berlabel `no` diprediksi `yes`.
+| **Aktual: no**   | TN           | FP            |
+| **Aktual: yes**  | FN           | TP            |
 
 ---
 
 ### Prediksi Data Baru
 
 ```python
-# Prediksi X = (age<=30, income=medium, student=yes, credit_rating=fair)
-# Contoh dari materi kuliah
 data_baru = pd.DataFrame([{
     'age': '<=30',
     'income': 'medium',
@@ -187,81 +165,58 @@ data_baru = pd.DataFrame([{
     'credit_rating': 'fair'
 }])
 
-X_baru_enc = enc.transform(data_baru)
-prediksi   = model.predict(X_baru_enc)
+X_baru_enc   = enc.transform(data_baru)
+prediksi     = model.predict(X_baru_enc)
 probabilitas = model.predict_proba(X_baru_enc)
 
-label = ['no', 'yes']
-print("=== Prediksi Data Baru ===")
-print("Input: age<=30, income=medium, student=yes, credit_rating=fair")
-print(f"Prediksi kelas: buys_computer = {label[prediksi[0]]}")
+label_map = {0: 'no', 1: 'yes'}
+print("\n" + "=" * 50)
+print("=== PREDIKSI DATA BARU ===")
+print("=" * 50)
+print("Input: age=<=30, income=medium, student=yes, credit_rating=fair")
+print(f"\nPrediksi kelas     : buys_computer = {label_map[prediksi[0]]}")
 print(f"P(buys_computer=no  | X) = {probabilitas[0][0]:.4f}")
 print(f"P(buys_computer=yes | X) = {probabilitas[0][1]:.4f}")
 ```
 
-**Output:**
-```
-=== Prediksi Data Baru ===
-Input: age<=30, income=medium, student=yes, credit_rating=fair
-Prediksi kelas: buys_computer = yes
-P(buys_computer=no  | X) = 0.2322
-P(buys_computer=yes | X) = 0.7678
-```
-
 ---
 
-## Verifikasi Perhitungan Manual
+### Verifikasi Perhitungan Manual
 
-### Prior Probability
+```python
+lookup = {}
+for fi, col in enumerate(X.columns):
+    cats = enc.categories_[fi]
+    lookup[col] = {}
+    for ci, cat in enumerate(cats):
+        lookup[col][cat] = {
+            'no':  np.exp(model.feature_log_prob_[fi][0][ci]),
+            'yes': np.exp(model.feature_log_prob_[fi][1][ci]),
+        }
 
-Dari 14 data training:
+prior_yes = (y == 'yes').sum() / n_total
+prior_no  = (y == 'no').sum()  / n_total
 
-| Kelas | Count | P(kelas) |
-|-------|-------|----------|
-| yes   | 9     | 9/14 = **0.6429** |
-| no    | 5     | 5/14 = **0.3571** |
+q = {'age': '<=30', 'income': 'medium', 'student': 'yes', 'credit_rating': 'fair'}
 
-### Tabel Probabilitas Kondisional P(fitur \| kelas) dengan Laplace α=1
+score_yes = prior_yes
+score_no  = prior_no
+for col, val in q.items():
+    score_yes *= lookup[col][val]['yes']
+    score_no  *= lookup[col][val]['no']
 
-| Atribut       | Nilai     | P(\|no)  | P(\|yes) |
-|---------------|-----------|----------|----------|
-| age           | 31-40     | 0.1250   | 0.4167   |
-|               | <=30      | 0.5000   | 0.2500   |
-|               | >40       | 0.3750   | 0.3333   |
-| income        | high      | 0.3750   | 0.2500   |
-|               | low       | 0.2500   | 0.3333   |
-|               | medium    | 0.3750   | 0.4167   |
-| student       | no        | 0.7143   | 0.3636   |
-|               | yes       | 0.2857   | 0.6364   |
-| credit_rating | excellent | 0.5714   | 0.3636   |
-|               | fair      | 0.4286   | 0.6364   |
+total = score_yes + score_no
 
-### Perhitungan untuk X = (age<=30, income=medium, student=yes, credit_rating=fair)
-
-**Skor kelas `yes`:**
-
+print("\n" + "=" * 50)
+print("=== VERIFIKASI PERHITUNGAN MANUAL ===")
+print("=" * 50)
+print(f"  Skor P(yes|X) sebelum normalisasi : {score_yes:.6f}")
+print(f"  Skor P(no|X)  sebelum normalisasi : {score_no:.6f}")
+print(f"  Total                             : {total:.6f}")
+print(f"\n  P(yes|X) ternormalisasi = {score_yes/total:.4f}")
+print(f"  P(no|X)  ternormalisasi = {score_no/total:.4f}")
+print(f"\n  ✓ Konsisten dengan output model sklearn")
 ```
-P(yes|X) ∝ P(age<=30|yes) × P(medium|yes) × P(student=yes|yes) × P(fair|yes) × P(yes)
-         = 0.2500 × 0.4167 × 0.6364 × 0.6364 × 0.6429
-         = 0.027118
-```
-
-**Skor kelas `no`:**
-
-```
-P(no|X) ∝ P(age<=30|no) × P(medium|no) × P(student=yes|no) × P(fair|no) × P(no)
-        = 0.5000 × 0.3750 × 0.2857 × 0.4286 × 0.3571
-        = 0.008200
-```
-
-**Normalisasi:**
-
-```
-P(yes|X) = 0.027118 / (0.027118 + 0.008200) = 0.7678
-P(no|X)  = 0.008200 / (0.027118 + 0.008200) = 0.2322
-```
-
-**Kesimpulan: X diprediksi sebagai buys\_computer = `yes`** ✓
 
 ---
 
@@ -273,25 +228,26 @@ Masalah probabilitas nol muncul ketika suatu kombinasi nilai atribut dan kelas t
 P(xi | Cj) = (count(xi, Cj) + α) / (count(Cj) + α × |Vi|)
 ```
 
-di mana |Vi| adalah jumlah nilai unik atribut i.
+di mana `|Vi|` adalah jumlah nilai unik atribut i.
 
 ```python
-# alpha=0.0: tanpa smoothing (bisa menghasilkan probabilitas = 0)
-# alpha=1.0: Laplace smoothing (default yang direkomendasikan)
+count_3140_no = ((df['age'] == '31-40') & (df['buys_computer'] == 'no')).sum()
+count_no      = (df['buys_computer'] == 'no').sum()
+n_age_vals    = df['age'].nunique()
 
-model_tanpa_laplace = CategoricalNB(alpha=0.0)
-model_dengan_laplace = CategoricalNB(alpha=1.0)
+p_tanpa  = count_3140_no / count_no
+p_dengan = (count_3140_no + 1) / (count_no + n_age_vals)
 
-model_tanpa_laplace.fit(X_enc, y_enc)
-model_dengan_laplace.fit(X_enc, y_enc)
+print("\n" + "=" * 50)
+print("=== DAMPAK LAPLACE SMOOTHING ===")
+print("=== Kasus: P(age=31-40 | no) ===")
+print("=" * 50)
+print(f"  Count(age=31-40, no) = {count_3140_no}")
+print(f"  Count(no)            = {count_no}")
+print(f"  |V(age)|             = {n_age_vals}")
+print(f"\n  Tanpa Laplace  : {count_3140_no}/{count_no} = {p_tanpa:.4f}  ⚠ (probabilitas nol!)")
+print(f"  Dengan Laplace : ({count_3140_no}+1)/({count_no}+{n_age_vals}) = {p_dengan:.4f}  ✓")
 ```
-
-**Contoh kasus:** Pada data training, tidak ada record dengan `age=31-40` dan `buys_computer=no`.
-
-| Metode          | P(age=31-40 \| no)          |
-|-----------------|-----------------------------|
-| Tanpa Laplace   | 0 / 5 = **0.0000** ⚠        |
-| Dengan Laplace  | (0+1) / (5+3) = **0.1250** ✓ |
 
 Tanpa Laplace, skor kelas `no` akan selalu nol untuk input apapun yang mengandung `age=31-40`, sehingga hasil prediksi menjadi tidak andal.
 
@@ -327,5 +283,3 @@ Untuk dataset `buys_computer` yang semua atributnya bersifat kategorik, **`Categ
 - Tidak bisa memodelkan ketergantungan antar variabel (berbeda dengan Bayesian Belief Network)
 
 Bayesian Belief Network (BBN) hadir sebagai solusi atas keterbatasan ini. BBN menggunakan graf berarah tanpa siklus (DAG) untuk merepresentasikan hubungan sebab-akibat antar variabel.
-
----

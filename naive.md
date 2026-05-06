@@ -53,7 +53,7 @@ Jalankan dengan: `python naive_bayes.py`
 
 ### Import Library dan Baca Data
 
-```python
+```{code-cell}
 import pandas as pd
 import numpy as np
 from sklearn.naive_bayes import CategoricalNB
@@ -75,7 +75,7 @@ print(df['buys_computer'].value_counts().to_string())
 
 ### Encoding dan Training Model
 
-```python
+```{code-cell}
 X = df.drop(columns='buys_computer')
 y = df['buys_computer']
 
@@ -100,7 +100,7 @@ model.fit(X_enc, y_enc)
 
 ### Prior Probability dan Probabilitas Kondisional
 
-```python
+```{code-cell}
 print("\n" + "=" * 50)
 print("=== PRIOR PROBABILITY ===")
 print("=" * 50)
@@ -128,7 +128,7 @@ for fi, col in enumerate(X.columns):
 
 ### Evaluasi Model pada Training Set
 
-```python
+```{code-cell}
 y_pred = model.predict(X_enc)
 
 print("\n" + "=" * 50)
@@ -157,7 +157,7 @@ print(f"\n  TN={cm[0][0]}, FP={cm[0][1]}, FN={cm[1][0]}, TP={cm[1][1]}")
 
 ### Prediksi Data Baru
 
-```python
+```{code-cell}
 data_baru = pd.DataFrame([{
     'age': '<=30',
     'income': 'medium',
@@ -183,7 +183,7 @@ print(f"P(buys_computer=yes | X) = {probabilitas[0][1]:.4f}")
 
 ### Verifikasi Perhitungan Manual
 
-```python
+```{code-cell}
 lookup = {}
 for fi, col in enumerate(X.columns):
     cats = enc.categories_[fi]
@@ -230,7 +230,7 @@ P(xi | Cj) = (count(xi, Cj) + α) / (count(Cj) + α × |Vi|)
 
 di mana `|Vi|` adalah jumlah nilai unik atribut i.
 
-```python
+```{code-cell}
 count_3140_no = ((df['age'] == '31-40') & (df['buys_computer'] == 'no')).sum()
 count_no      = (df['buys_computer'] == 'no').sum()
 n_age_vals    = df['age'].nunique()

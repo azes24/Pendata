@@ -24,3 +24,4 @@ chapters:
 - file: naive
 - file: decission
 - file: random_forest
+- file: regresi

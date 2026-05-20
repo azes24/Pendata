@@ -1,4 +1,4 @@
-# Penjelasan Random Forest dan Tahapan Pengolahan Data di KNIME
+# Random Forest
 
 ## 1. Pengertian Random Forest
 

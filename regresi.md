@@ -146,5 +146,8 @@ Untuk menampilkan **garis regresi** (garis tengah) di GeoGebra, tambahkan persam
 
 ```
 y = 1.0769x
+
 ```
+![Grafik Data](/gambar/regresi01.png)
+
 

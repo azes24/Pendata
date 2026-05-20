@@ -1,3 +1,6 @@
+# Regresi Linier
+
+
 # Analisis Regresi Linier — Data Koordinat Titik
 
 ## 1. Data Input

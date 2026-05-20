@@ -145,7 +145,7 @@ R² = **0.718** → model menjelaskan **71.8%** variasi data Y.
 Untuk menampilkan **garis regresi** (garis tengah) di GeoGebra, tambahkan persamaan berikut di kolom Algebra:
 
 ```
-y = 1.0769x
+y = 1.0769x + 0
 
 ```
 ![Grafik Data](/gambar/regresi01.png)

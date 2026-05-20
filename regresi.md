@@ -134,6 +134,17 @@ G: x=5, y_aktual=6, y_pred=5.3846, residu=0.6154
 | β₁ | 1.07692308 | 1.07692308 |
 | R² | 0.7179 | 0.7179 |
 
-**Model:** Ŷ = 1.0769 · X
+**Model:** Ŷ = 1.0769x
 
 R² = **0.718** → model menjelaskan **71.8%** variasi data Y.
+
+---
+
+## 6. Visualisasi di GeoGebra
+
+Untuk menampilkan **garis regresi** (garis tengah) di GeoGebra, tambahkan persamaan berikut di kolom Algebra:
+
+```
+y = 1.0769x
+```
+

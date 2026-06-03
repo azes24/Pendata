@@ -1,4 +1,4 @@
-# Peramalan kadar $NO_2$ di daerah Bangkalan Madura (revisi)
+# Peramalan kadar $NO_2$ di daerah Bangkalan
 
 ## Latar Belakang
 

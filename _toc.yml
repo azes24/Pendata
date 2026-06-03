@@ -25,3 +25,4 @@ chapters:
 - file: decission
 - file: random_forest
 - file: regresi
+- file: peramalan

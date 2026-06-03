@@ -83,6 +83,8 @@ s5p_no2_aoi = s5p_no2_daily.aggregate_spatial(
 
 Code diatas memerlukan titik koordinasi area yang akan diambil data $NO_2$-nya, untuk mengambil titik koordinasi kalian kunjungi website https://geojson.io/#map=14.8/-7.04732/112.69463 . Didalam website tersebut kalian akan memilih daerah dengan cara memberi shape kotak didaerah yang ingin kalian ambil datanya.
 
+![Grafik Data](/gambar/peramalan01.png)
+
 Di panel sebelah kanan terdapat data JSON yang berupa koordinat daerah yang kalian pilih, kalian salin terus sesuaikan dengan code diatas di bagian variabel `aoi` dan `spatial_extent`.
 
 Lalu kalian tambahkan baris code dibawah untuk memulai pengambilan data:
@@ -346,6 +348,8 @@ plt.xticks(
 plt.show()
 ```
 
+![Grafik Data](/gambar/peramalan02.png)
+
 Setelah itu, kita akan menghapus data outlier. Karena data ini merupakan data Time Series, maka data outlier yang dihapus akan diisi kembali menggunakan Interpolasi Linear.
 
 ```python
@@ -383,6 +387,7 @@ plt.tight_layout()
 plt.show()
 ```
 
+![Grafik Data](/gambar/peramalan03.png)
 ---
 
 ## 3. Modeling menggunakan KNN Regression
@@ -546,6 +551,8 @@ plt.legend()
 plt.show()
 ```
 
+![Grafik Data](/gambar/peramalan04.png)
+
 **10 hari sebelum:**
 
 ```python
@@ -559,6 +566,8 @@ plt.legend()
 plt.show()
 ```
 
+![Grafik Data](/gambar/peramalan05.png)
+
 **30 hari sebelum:**
 
 ```python
@@ -571,6 +580,8 @@ plt.ylabel("NO2 Value")
 plt.legend()
 plt.show()
 ```
+
+![Grafik Data](/gambar/peramalan06.png)
 
 ---
 

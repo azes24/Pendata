@@ -1,4 +1,4 @@
-# Peramalan kadar $NO_2$ di daerah Bangkalan
+# Peramalan kadar $NO_2$ di daerah Bangkalan (Telang-Graha)
 
 ## Latar Belakang
 

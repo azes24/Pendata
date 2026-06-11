@@ -26,3 +26,4 @@ chapters:
 - file: random_forest
 - file: regresi
 - file: peramalan
+- file: analisa_data
